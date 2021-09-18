@@ -1881,7 +1881,7 @@ pre .javascript .function {
   box-sizing: border-box;
   width: 100%;
   overflow: hidden;
-  background: url("/images/banner2.png") center center/cover no-repeat;
+  background: url("/images/bg.svg") center center/cover no-repeat;
   background-position-y: 70px;
 }
 @media (max-width: 780px) {

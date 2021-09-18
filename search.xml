@@ -1,23 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Hexo搭建常见问题</title>
-    <url>/2021/09/17/Hexo%E6%90%AD%E5%BB%BA%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<h5 id="github设置"><a href="#github设置" class="headerlink" title="github设置"></a>github设置</h5><h5 id="插件"><a href="#插件" class="headerlink" title="插件"></a>插件</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#next主题</span><br><span class="line">npm install hexo-theme-next </span><br><span class="line"></span><br><span class="line">#deploy到 git</span><br><span class="line">npm install hexo-deployer-git --save</span><br><span class="line"></span><br><span class="line">#图片插件</span><br><span class="line">npm install hexo-asset-image --save</span><br></pre></td></tr></table></figure>
-
-<h5 id="图片问题"><a href="#图片问题" class="headerlink" title="图片问题"></a>图片问题</h5><h6 id="Typora-修改"><a href="#Typora-修改" class="headerlink" title="Typora 修改"></a>Typora 修改</h6><p><img src="/2021/09/17/Hexo%E6%90%AD%E5%BB%BA%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/image-20210917101405916.png" alt="image-20210917101405916"></p>
-<h6 id="asset-image插件修改"><a href="#asset-image插件修改" class="headerlink" title="asset-image插件修改"></a>asset-image插件修改</h6><p>打开文件/rickBlog/node_modules/hexo-asset-image/index.js，用下面的内容替换</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#x27;use strict&#x27;;</span><br><span class="line">var cheerio = require(&#x27;cheerio&#x27;);</span><br><span class="line"></span><br><span class="line">// http://stackoverflow.com/questions/14480345/how-to-get-the-nth-occurrence-in-a-string</span><br><span class="line">function getPosition(str, m, i) &#123;</span><br><span class="line">  return str.split(m, i).join(m).length;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var version = String(hexo.version).split(&#x27;.&#x27;);</span><br><span class="line">hexo.extend.filter.register(&#x27;after_post_render&#x27;, function(data)&#123;</span><br><span class="line">  var config = hexo.config;</span><br><span class="line">  if(config.post_asset_folder)&#123;</span><br><span class="line">    	var link = data.permalink;</span><br><span class="line">	if(version.length &gt; 0 &amp;&amp; Number(version[0]) == 3)</span><br><span class="line">	   var beginPos = getPosition(link, &#x27;/&#x27;, 1) + 1;</span><br><span class="line">	else</span><br><span class="line">	   var beginPos = getPosition(link, &#x27;/&#x27;, 3) + 1;</span><br><span class="line">	// In hexo 3.1.1, the permalink of &quot;about&quot; page is like &quot;.../about/index.html&quot;.</span><br><span class="line">	var endPos = link.lastIndexOf(&#x27;/&#x27;) + 1;</span><br><span class="line">    link = link.substring(beginPos, endPos);</span><br><span class="line"></span><br><span class="line">    var toprocess = [&#x27;excerpt&#x27;, &#x27;more&#x27;, &#x27;content&#x27;];</span><br><span class="line">    for(var i = 0; i &lt; toprocess.length; i++)&#123;</span><br><span class="line">      var key = toprocess[i];</span><br><span class="line"> </span><br><span class="line">      var $ = cheerio.load(data[key], &#123;</span><br><span class="line">        ignoreWhitespace: false,</span><br><span class="line">        xmlMode: false,</span><br><span class="line">        lowerCaseTags: false,</span><br><span class="line">        decodeEntities: false</span><br><span class="line">      &#125;);</span><br><span class="line"></span><br><span class="line">      $(&#x27;img&#x27;).each(function()&#123;</span><br><span class="line">		if ($(this).attr(&#x27;src&#x27;))&#123;</span><br><span class="line">			// For windows style path, we replace &#x27;\&#x27; to &#x27;/&#x27;.</span><br><span class="line">			var src = $(this).attr(&#x27;src&#x27;).replace(&#x27;\\&#x27;, &#x27;/&#x27;);</span><br><span class="line">			if(!/http[s]*.*|\/\/.*/.test(src) &amp;&amp;</span><br><span class="line">			   !/^\s*\//.test(src)) &#123;</span><br><span class="line">			  // For &quot;about&quot; page, the first part of &quot;src&quot; can&#x27;t be removed.</span><br><span class="line">			  // In addition, to support multi-level local directory.</span><br><span class="line">			  var linkArray = link.split(&#x27;/&#x27;).filter(function(elem)&#123;</span><br><span class="line">				return elem != &#x27;&#x27;;</span><br><span class="line">			  &#125;);</span><br><span class="line">			  var srcArray = src.split(&#x27;/&#x27;).filter(function(elem)&#123;</span><br><span class="line">				return elem != &#x27;&#x27; &amp;&amp; elem != &#x27;.&#x27;;</span><br><span class="line">			  &#125;);</span><br><span class="line">			  if(srcArray.length &gt; 1)</span><br><span class="line">				srcArray.shift();</span><br><span class="line">			  src = srcArray.join(&#x27;/&#x27;);</span><br><span class="line">			  $(this).attr(&#x27;src&#x27;, config.root + link + src);</span><br><span class="line">			  console.info&amp;&amp;console.info(&quot;update link as:--&gt;&quot;+config.root + link + src);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;else&#123;</span><br><span class="line">			console.info&amp;&amp;console.info(&quot;no src attr, skipped...&quot;);</span><br><span class="line">			console.info&amp;&amp;console.info($(this));</span><br><span class="line">		&#125;</span><br><span class="line">      &#125;);</span><br><span class="line">      data[key] = $.html();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>tech</category>
-      </categories>
-      <tags>
-        <tag>Hexo</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Hello World</title>
     <url>/2021/09/16/hello-world/</url>
     <content><![CDATA[<p>Welcome to <a class="link" href="https://hexo.io/">Hexo<i class="fas fa-external-link-alt"></i></a>! This is your very first post. Check <a class="link" href="https://hexo.io/docs/">documentation<i class="fas fa-external-link-alt"></i></a> for more info. If you get any problems when using Hexo, you can find the answer in <a class="link" href="https://hexo.io/docs/troubleshooting.html">troubleshooting<i class="fas fa-external-link-alt"></i></a> or you can ask me on <a class="link" href="https://github.com/hexojs/hexo/issues">GitHub<i class="fas fa-external-link-alt"></i></a>.</p>
@@ -42,8 +25,8 @@
       </tags>
   </entry>
   <entry>
-    <title>javaGeneric</title>
-    <url>/2021/09/17/javaGeneric/</url>
+    <title>JavaGeneric</title>
+    <url>/2021/09/17/JavaGeneric/</url>
     <content><![CDATA[<h4 id="什么是泛型"><a href="#什么是泛型" class="headerlink" title="什么是泛型"></a>什么是泛型</h4><ul>
 <li><h5 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h5><ul>
 <li>List默认是Object，类型不确定，<strong>运行期</strong>类型转换异常</li>
@@ -67,7 +50,7 @@
 <li><h6 id="常用的泛型标识T、E、K、V"><a href="#常用的泛型标识T、E、K、V" class="headerlink" title="常用的泛型标识T、E、K、V"></a>常用的泛型标识T、E、K、V</h6></li>
 <li><h6 id="使用语法"><a href="#使用语法" class="headerlink" title="使用语法"></a>使用语法</h6><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">类名&lt;具体的数据类型&gt; 对象名 =  <span class="keyword">new</span> 类名&lt;具体的数据类型&gt;();</span><br><span class="line">jdk1<span class="number">.7</span>之后，后面的具体数据类型可以不写。</span><br><span class="line">类名&lt;具体的数据类型&gt; 对象名 =  <span class="keyword">new</span> 类名&lt;&gt;();</span><br></pre></td></tr></table></figure>
 
-<p><img src="/2021/09/17/javaGeneric/image-20210917101934874.png" alt="image-20210917101934874"></p>
+<p><img src="/2021/09/17/JavaGeneric/image-20210917101934874.png" alt="image-20210917101934874"></p>
 </li>
 <li><h6 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h6><ul>
 <li><p>没有使用具体类型，默认为Object</p>
@@ -75,7 +58,7 @@
 <li><p>泛型类不支持基本数据类型。</p>
 </li>
 <li><p>同一泛型类，根据不同数据类型创建的对象，本质上是同一类型。</p>
-<p><img src="/2021/09/17/javaGeneric/image-20210917182735304.png" alt="image-20210917182735304"></p>
+<p><img src="/2021/09/17/JavaGeneric/image-20210917182735304.png" alt="image-20210917182735304"></p>
 </li>
 </ul>
 </li>
@@ -100,12 +83,43 @@
 </ul>
 </li>
 </ul>
-<h4 id="泛型方法"><a href="#泛型方法" class="headerlink" title="泛型方法"></a>泛型方法</h4><h4 id="类型通配符"><a href="#类型通配符" class="headerlink" title="类型通配符"></a>类型通配符</h4><h4 id="类型擦除"><a href="#类型擦除" class="headerlink" title="类型擦除"></a>类型擦除</h4><h4 id="泛型和数组"><a href="#泛型和数组" class="headerlink" title="泛型和数组"></a>泛型和数组</h4><h4 id="泛型和反射"><a href="#泛型和反射" class="headerlink" title="泛型和反射"></a>泛型和反射</h4>]]></content>
+<h4 id="泛型方法"><a href="#泛型方法" class="headerlink" title="泛型方法"></a>泛型方法</h4><ul>
+<li><p>泛型类：是在实例化类的时候指明泛型的具体类型。</p>
+</li>
+<li><p>泛型方法：是在调用方法的时候指明泛型的具体类型</p>
+<h5 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h5><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">修饰符 &lt;T,E,...&gt; 返回值类型 方法名(形参列表)&#123;</span><br><span class="line">  方法体...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">package</span> com.generics;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GenericMethod</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> &lt;T&gt; <span class="function"><span class="keyword">void</span> <span class="title">getTaa</span><span class="params">(T t)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i = Integer.parseInt((String) t);</span><br><span class="line">    System.out.println(i + <span class="number">1</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>public 与返回值之间的<T>非常重要，可以理解为声明此方法是泛型方法。</T></li>
+<li>只有声明了<T>的方法才是泛型方法，泛型类中使用了泛型的成员方法不是泛型方法。</T></li>
+<li><T>表明该方法是使用泛型T，此时才可以在方法中使用泛型T</T></li>
+<li>与泛型类类似，此处T可以随便写为任意标识，，常见的T，E，K，V</li>
+</ul>
+</li>
+</ul>
+<h4 id="类型通配符"><a href="#类型通配符" class="headerlink" title="类型通配符"></a>类型通配符</h4><h4 id="类型擦除"><a href="#类型擦除" class="headerlink" title="类型擦除"></a>类型擦除</h4><h4 id="泛型和数组"><a href="#泛型和数组" class="headerlink" title="泛型和数组"></a>泛型和数组</h4><h4 id="泛型和反射"><a href="#泛型和反射" class="headerlink" title="泛型和反射"></a>泛型和反射</h4>]]></content>
       <categories>
         <category>tech</category>
       </categories>
       <tags>
         <tag>javaGeneric</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hexo搭建常见问题</title>
+    <url>/2021/09/17/Hexo%E6%90%AD%E5%BB%BA%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<h5 id="github设置"><a href="#github设置" class="headerlink" title="github设置"></a>github设置</h5><h5 id="插件"><a href="#插件" class="headerlink" title="插件"></a>插件</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#next主题</span><br><span class="line">npm install hexo-theme-next </span><br><span class="line"></span><br><span class="line">#deploy到 git</span><br><span class="line">npm install hexo-deployer-git --save</span><br><span class="line"></span><br><span class="line">#图片插件</span><br><span class="line">npm install hexo-asset-image --save</span><br></pre></td></tr></table></figure>
+
+<h5 id="图片问题"><a href="#图片问题" class="headerlink" title="图片问题"></a>图片问题</h5><h6 id="Typora-修改"><a href="#Typora-修改" class="headerlink" title="Typora 修改"></a>Typora 修改</h6><p><img src="/2021/09/17/Hexo%E6%90%AD%E5%BB%BA%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/image-20210917101405916.png" alt="image-20210917101405916"></p>
+<h6 id="asset-image插件修改"><a href="#asset-image插件修改" class="headerlink" title="asset-image插件修改"></a>asset-image插件修改</h6><p>打开文件/rickBlog/node_modules/hexo-asset-image/index.js，用下面的内容替换</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#x27;use strict&#x27;;</span><br><span class="line">var cheerio = require(&#x27;cheerio&#x27;);</span><br><span class="line"></span><br><span class="line">// http://stackoverflow.com/questions/14480345/how-to-get-the-nth-occurrence-in-a-string</span><br><span class="line">function getPosition(str, m, i) &#123;</span><br><span class="line">  return str.split(m, i).join(m).length;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var version = String(hexo.version).split(&#x27;.&#x27;);</span><br><span class="line">hexo.extend.filter.register(&#x27;after_post_render&#x27;, function(data)&#123;</span><br><span class="line">  var config = hexo.config;</span><br><span class="line">  if(config.post_asset_folder)&#123;</span><br><span class="line">    	var link = data.permalink;</span><br><span class="line">	if(version.length &gt; 0 &amp;&amp; Number(version[0]) == 3)</span><br><span class="line">	   var beginPos = getPosition(link, &#x27;/&#x27;, 1) + 1;</span><br><span class="line">	else</span><br><span class="line">	   var beginPos = getPosition(link, &#x27;/&#x27;, 3) + 1;</span><br><span class="line">	// In hexo 3.1.1, the permalink of &quot;about&quot; page is like &quot;.../about/index.html&quot;.</span><br><span class="line">	var endPos = link.lastIndexOf(&#x27;/&#x27;) + 1;</span><br><span class="line">    link = link.substring(beginPos, endPos);</span><br><span class="line"></span><br><span class="line">    var toprocess = [&#x27;excerpt&#x27;, &#x27;more&#x27;, &#x27;content&#x27;];</span><br><span class="line">    for(var i = 0; i &lt; toprocess.length; i++)&#123;</span><br><span class="line">      var key = toprocess[i];</span><br><span class="line"> </span><br><span class="line">      var $ = cheerio.load(data[key], &#123;</span><br><span class="line">        ignoreWhitespace: false,</span><br><span class="line">        xmlMode: false,</span><br><span class="line">        lowerCaseTags: false,</span><br><span class="line">        decodeEntities: false</span><br><span class="line">      &#125;);</span><br><span class="line"></span><br><span class="line">      $(&#x27;img&#x27;).each(function()&#123;</span><br><span class="line">		if ($(this).attr(&#x27;src&#x27;))&#123;</span><br><span class="line">			// For windows style path, we replace &#x27;\&#x27; to &#x27;/&#x27;.</span><br><span class="line">			var src = $(this).attr(&#x27;src&#x27;).replace(&#x27;\\&#x27;, &#x27;/&#x27;);</span><br><span class="line">			if(!/http[s]*.*|\/\/.*/.test(src) &amp;&amp;</span><br><span class="line">			   !/^\s*\//.test(src)) &#123;</span><br><span class="line">			  // For &quot;about&quot; page, the first part of &quot;src&quot; can&#x27;t be removed.</span><br><span class="line">			  // In addition, to support multi-level local directory.</span><br><span class="line">			  var linkArray = link.split(&#x27;/&#x27;).filter(function(elem)&#123;</span><br><span class="line">				return elem != &#x27;&#x27;;</span><br><span class="line">			  &#125;);</span><br><span class="line">			  var srcArray = src.split(&#x27;/&#x27;).filter(function(elem)&#123;</span><br><span class="line">				return elem != &#x27;&#x27; &amp;&amp; elem != &#x27;.&#x27;;</span><br><span class="line">			  &#125;);</span><br><span class="line">			  if(srcArray.length &gt; 1)</span><br><span class="line">				srcArray.shift();</span><br><span class="line">			  src = srcArray.join(&#x27;/&#x27;);</span><br><span class="line">			  $(this).attr(&#x27;src&#x27;, config.root + link + src);</span><br><span class="line">			  console.info&amp;&amp;console.info(&quot;update link as:--&gt;&quot;+config.root + link + src);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;else&#123;</span><br><span class="line">			console.info&amp;&amp;console.info(&quot;no src attr, skipped...&quot;);</span><br><span class="line">			console.info&amp;&amp;console.info($(this));</span><br><span class="line">		&#125;</span><br><span class="line">      &#125;);</span><br><span class="line">      data[key] = $.html();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>tech</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
       </tags>
   </entry>
 </search>

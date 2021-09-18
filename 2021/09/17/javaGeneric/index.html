@@ -269,8 +269,29 @@
 </li>
 </ul>
 <h4 id="类型通配符"><a href="#类型通配符" class="headerlink" title="类型通配符"></a>类型通配符</h4><h5 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h5><ul>
-<li>类型通配符一般是使用”?” 代替具体类型实参。</li>
-<li>类型通配符是类型实参，而不是类型形参。</li>
+<li><p>类型通配符一般是使用”?” 代替具体类型实参。</p>
+</li>
+<li><p>类型通配符是类型实参，而不是类型形参。</p>
+<p><strong>泛型T没有多态的概念。</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Box&lt;Number&gt; 和Box&lt;Integer&gt; 本质是同一个Box</span><br><span class="line">也没有方法重载的概念，所以需要通配符。</span><br><span class="line">Box&lt;?&gt;</span><br></pre></td></tr></table></figure></li>
+<li><p> 类型通配符的上限</p>
+</li>
+</ul>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">类/接口 &lt;? extends 实参类型&gt; </span><br><span class="line"> 要求该泛型的类型，只能是实参类型，或者实参类型的子类。</span><br></pre></td></tr></table></figure>
+
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Box&lt;? extends Number&gt;   Number 或者Number的子类</span><br></pre></td></tr></table></figure>
+
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Animal</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Cat</span> <span class="keyword">extends</span> <span class="title">Animal</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MiniCat</span> <span class="keyword">extends</span> <span class="title">Cat</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>  方法上限是Cat，所以Animallist会编译错误。</p>
+<p>  <img src="/2021/09/17/javaGeneric/image-20210918151102352.png" alt="image-20210918151102352"></p>
+<ul>
+<li><p>类型通配符的下限</p>
+<ul>
+<li><p>语法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">类/接口 &lt;? <span class="keyword">super</span> 是参类型&gt;</span><br><span class="line">要求该泛型的类型，只能是实参类型，或者是参类型的父类型。</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
 </ul>
 <h4 id="类型擦除"><a href="#类型擦除" class="headerlink" title="类型擦除"></a>类型擦除</h4><h4 id="泛型和数组"><a href="#泛型和数组" class="headerlink" title="泛型和数组"></a>泛型和数组</h4><h4 id="泛型和反射"><a href="#泛型和反射" class="headerlink" title="泛型和反射"></a>泛型和反射</h4>
         </div>

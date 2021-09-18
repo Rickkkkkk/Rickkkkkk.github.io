@@ -42,8 +42,8 @@
       </tags>
   </entry>
   <entry>
-    <title>JavaGeneric</title>
-    <url>/2021/09/17/JavaGeneric/</url>
+    <title>javaGeneric</title>
+    <url>/2021/09/17/javaGeneric/</url>
     <content><![CDATA[<h4 id="什么是泛型"><a href="#什么是泛型" class="headerlink" title="什么是泛型"></a>什么是泛型</h4><ul>
 <li><h5 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h5><ul>
 <li>List默认是Object，类型不确定，<strong>运行期</strong>类型转换异常</li>
@@ -67,7 +67,7 @@
 <li><h6 id="常用的泛型标识T、E、K、V"><a href="#常用的泛型标识T、E、K、V" class="headerlink" title="常用的泛型标识T、E、K、V"></a>常用的泛型标识T、E、K、V</h6></li>
 <li><h6 id="使用语法"><a href="#使用语法" class="headerlink" title="使用语法"></a>使用语法</h6><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">类名&lt;具体的数据类型&gt; 对象名 =  <span class="keyword">new</span> 类名&lt;具体的数据类型&gt;();</span><br><span class="line">jdk1<span class="number">.7</span>之后，后面的具体数据类型可以不写。</span><br><span class="line">类名&lt;具体的数据类型&gt; 对象名 =  <span class="keyword">new</span> 类名&lt;&gt;();</span><br></pre></td></tr></table></figure>
 
-<p><img src="/2021/09/17/JavaGeneric/image-20210917101934874.png" alt="image-20210917101934874"></p>
+<p><img src="/2021/09/17/javaGeneric/image-20210917101934874.png" alt="image-20210917101934874"></p>
 </li>
 <li><h6 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h6><ul>
 <li><p>没有使用具体类型，默认为Object</p>
@@ -75,7 +75,7 @@
 <li><p>泛型类不支持基本数据类型。</p>
 </li>
 <li><p>同一泛型类，根据不同数据类型创建的对象，本质上是同一类型。</p>
-<p><img src="/2021/09/17/JavaGeneric/image-20210917182735304.png" alt="image-20210917182735304"></p>
+<p><img src="/2021/09/17/javaGeneric/image-20210917182735304.png" alt="image-20210917182735304"></p>
 </li>
 </ul>
 </li>
@@ -115,10 +115,14 @@
 </li>
 <li><h5 id="泛型方法与可变参数"><a href="#泛型方法与可变参数" class="headerlink" title="泛型方法与可变参数"></a>泛型方法与可变参数</h5><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span>  &lt;E&gt; <span class="function"><span class="keyword">void</span> <span class="title">print</span><span class="params">(E... e)</span></span>&#123;</span><br><span class="line">  <span class="keyword">for</span>(E e1: e)&#123;</span><br><span class="line">    System.out.println(e1);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p><img src="/2021/09/17/JavaGeneric/image-20210918114719272.png" alt="image-20210918114719272"></p>
+<p><img src="/2021/09/17/javaGeneric/image-20210918114719272.png" alt="image-20210918114719272"></p>
 </li>
 </ul>
-<h4 id="类型通配符"><a href="#类型通配符" class="headerlink" title="类型通配符"></a>类型通配符</h4><h4 id="类型擦除"><a href="#类型擦除" class="headerlink" title="类型擦除"></a>类型擦除</h4><h4 id="泛型和数组"><a href="#泛型和数组" class="headerlink" title="泛型和数组"></a>泛型和数组</h4><h4 id="泛型和反射"><a href="#泛型和反射" class="headerlink" title="泛型和反射"></a>泛型和反射</h4>]]></content>
+<h4 id="类型通配符"><a href="#类型通配符" class="headerlink" title="类型通配符"></a>类型通配符</h4><h5 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h5><ul>
+<li>类型通配符一般是使用”?” 代替具体类型实参。</li>
+<li>类型通配符是类型实参，而不是类型形参。</li>
+</ul>
+<h4 id="类型擦除"><a href="#类型擦除" class="headerlink" title="类型擦除"></a>类型擦除</h4><h4 id="泛型和数组"><a href="#泛型和数组" class="headerlink" title="泛型和数组"></a>泛型和数组</h4><h4 id="泛型和反射"><a href="#泛型和反射" class="headerlink" title="泛型和反射"></a>泛型和反射</h4>]]></content>
       <categories>
         <category>tech</category>
       </categories>

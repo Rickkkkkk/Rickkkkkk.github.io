@@ -232,9 +232,30 @@
 <li><p>常用的泛型标识T、E、K、V</p>
 </li>
 <li><p>使用语法</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">类名&lt;具体的数据类型&gt; 对象名 =  <span class="keyword">new</span> 类名&lt;具体的数据类型&gt;();</span><br><span class="line"></span><br><span class="line">jdk1<span class="number">.7</span>之后，后面的具体数据类型可以不写。</span><br><span class="line">类名&lt;具体的数据类型&gt; 对象名 =  <span class="keyword">new</span> 类名&lt;&gt;();</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">类名&lt;具体的数据类型&gt; 对象名 =  <span class="keyword">new</span> 类名&lt;具体的数据类型&gt;();</span><br><span class="line">jdk1<span class="number">.7</span>之后，后面的具体数据类型可以不写。</span><br><span class="line">类名&lt;具体的数据类型&gt; 对象名 =  <span class="keyword">new</span> 类名&lt;&gt;();</span><br></pre></td></tr></table></figure>
 
 <p><img src="/2021/09/17/javaGeneric/image-20210917101934874.png" alt="image-20210917101934874"></p>
+</li>
+<li><p>注意事项</p>
+<ul>
+<li><p>没有使用具体类型，默认为Object</p>
+</li>
+<li><p>泛型类不支持基本数据类型。</p>
+</li>
+<li><p>同一泛型类，根据不同数据类型创建的对象，本质上是同一类型。</p>
+<p><img src="/2021/09/17/javaGeneric/image-20210917182735304.png" alt="image-20210917182735304"></p>
+</li>
+</ul>
+</li>
+<li><p>泛型类派生子类</p>
+<ul>
+<li><p>子类也是泛型类，子类和父类的泛型类要一致</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ChildGeneric</span>&lt;<span class="title">T</span>&gt; <span class="keyword">extends</span> <span class="title">ParentGeneric</span>&lt;<span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">public</span> <span class="title">class</span> <span class="title">ChildGeneric</span>&lt;<span class="title">T</span>,<span class="title">K</span>&gt; <span class="keyword">extends</span> <span class="title">ParentGeneric</span>&lt;<span class="title">T</span>&gt; //可以拓展，但是必须含有父类泛型</span></span><br></pre></td></tr></table></figure></li>
+<li><p>子类不是泛型类，父类要明确泛型的数据类型</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ChildGeneric</span> <span class="keyword">extends</span> <span class="title">ParentGeneric</span>&lt;<span class="title">String</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>如果子类继承父类，父类也没有写具体数据类型，默认是Object类型</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ChildGeneric</span> <span class="keyword">extends</span> <span class="title">ParentGeneric</span></span></span><br></pre></td></tr></table></figure></li>
+</ul>
 </li>
 </ul>
 </li>

@@ -46,7 +46,7 @@
     <url>/2021/09/17/javaGeneric/</url>
     <content><![CDATA[<h4 id="什么是泛型"><a href="#什么是泛型" class="headerlink" title="什么是泛型"></a>什么是泛型</h4><ul>
 <li><h5 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h5><ul>
-<li>List默认是Object，类型不确定，<strong>运行期</strong>类型转换异常</li>
+<li>jdk1.5之前，List默认是Object，类型不确定，<strong>运行期</strong>类型转换异常</li>
 </ul>
 </li>
 <li><h5 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h5><ul>
@@ -143,7 +143,29 @@
 </ul>
 </li>
 </ul>
-<h4 id="类型擦除"><a href="#类型擦除" class="headerlink" title="类型擦除"></a>类型擦除</h4><h4 id="泛型和数组"><a href="#泛型和数组" class="headerlink" title="泛型和数组"></a>泛型和数组</h4><h4 id="泛型和反射"><a href="#泛型和反射" class="headerlink" title="泛型和反射"></a>泛型和反射</h4>]]></content>
+<h4 id="类型擦除"><a href="#类型擦除" class="headerlink" title="类型擦除"></a>类型擦除</h4><ul>
+<li><h5 id="概念-1"><a href="#概念-1" class="headerlink" title="概念"></a>概念</h5><pre><code> 泛型是jdk1.5版本之后引入的，之前没有泛型，但是，泛型代码很好的和之前的代码兼容，那是因为泛型信息**只存在于编译阶段**，在进入JVM之前，于泛型相关的信息被擦除掉，称之为 类型擦除。
+</code></pre>
+</li>
+<li><h5 id="无限制类型擦除"><a href="#无限制类型擦除" class="headerlink" title="无限制类型擦除"></a>无限制类型擦除</h5><p><img src="/2021/09/17/javaGeneric/image-20210918160210103.png" alt="image-20210918160210103"></p>
+</li>
+<li><h5 id="有限制的类型擦除"><a href="#有限制的类型擦除" class="headerlink" title="有限制的类型擦除"></a>有限制的类型擦除</h5><p><img src="/2021/09/17/javaGeneric/image-20210918161710939.png" alt="image-20210918161710939"></p>
+</li>
+<li><h5 id="擦除泛型方法中定义的参数"><a href="#擦除泛型方法中定义的参数" class="headerlink" title="擦除泛型方法中定义的参数"></a>擦除泛型方法中定义的参数</h5><p><img src="/2021/09/17/javaGeneric/image-20210918162259121.png" alt="image-20210918162259121"></p>
+</li>
+<li><h5 id="桥接方法"><a href="#桥接方法" class="headerlink" title="桥接方法"></a>桥接方法</h5><p>接口这种会生成一个中间方法。</p>
+<p><img src="/2021/09/17/javaGeneric/image-20210918162907228.png" alt="image-20210918162907228"></p>
+</li>
+</ul>
+<h4 id="泛型和数组"><a href="#泛型和数组" class="headerlink" title="泛型和数组"></a>泛型和数组</h4><h5 id="泛型数组的创建"><a href="#泛型数组的创建" class="headerlink" title="泛型数组的创建"></a>泛型数组的创建</h5><ul>
+<li><h6 id="可以声明带泛型的数组引用，但是不能直接创建带泛型的数组对象"><a href="#可以声明带泛型的数组引用，但是不能直接创建带泛型的数组对象" class="headerlink" title="可以声明带泛型的数组引用，但是不能直接创建带泛型的数组对象"></a>可以声明带泛型的数组引用，但是不能直接创建带泛型的数组对象</h6><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">ArrayList[] list = <span class="keyword">new</span> ArrayList[<span class="number">5</span>];<span class="comment">//这样是ok的</span></span><br><span class="line">ArrayList&lt;String&gt;[] strList = <span class="keyword">new</span> ArrayList&lt;String&gt;[<span class="number">5</span>];<span class="comment">//这样是错误的，不能直接创建</span></span><br><span class="line">strList  =  list;<span class="comment">// 但是可以这样赋值</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2021/09/17/javaGeneric/image-20210918180947368.png" alt="image-20210918180947368"></p>
+</li>
+<li><p>可以通过java.lang.reflect.Array 的newInstance(Class<T>, int) 创建T[]数组</T></p>
+</li>
+</ul>
+<h4 id="泛型和反射"><a href="#泛型和反射" class="headerlink" title="泛型和反射"></a>泛型和反射</h4>]]></content>
       <categories>
         <category>tech</category>
       </categories>

@@ -312,12 +312,12 @@
 
 <p><img src="/2021/09/17/javaGeneric/image-20210918180947368.png" alt="image-20210918180947368"></p>
 </li>
-<li><p>可以通过java.lang.reflect.Array 的newInstance(Class<T>, int) 创建T[]数组</T></p>
+<li><p>可以通过<code>java.lang.reflect.Array 的newInstance(Class&lt;T&gt;, int)</code> 创建T[]数组</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Fruit</span>&lt;<span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">  <span class="keyword">private</span> T[] arr;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">Fruit</span><span class="params">(Class&lt;T&gt; clz)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.arr = (T[]) Array.newInstance(clz, <span class="number">12</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
 </ul>
 <h4 id="泛型和反射"><a href="#泛型和反射" class="headerlink" title="泛型和反射"></a>泛型和反射</h4><h6 id="反射常用的泛型类"><a href="#反射常用的泛型类" class="headerlink" title="反射常用的泛型类"></a>反射常用的泛型类</h6><ul>
-<li>Class<T></T></li>
-<li>Construct<T></T></li>
+<li><code>Class&lt;T&gt;</code></li>
+<li><code>Construct&lt;T&gt;</code></li>
 </ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Class&lt;Person&gt; personClass = Person.class;</span><br><span class="line">  Constructor&lt;Person&gt; constructor = personClass.getConstructor();</span><br><span class="line">  Person person = constructor.newInstance();</span><br><span class="line"></span><br><span class="line">  Class personClass1 = Person.class;</span><br><span class="line">  Constructor constructor1 = personClass1.getConstructor();</span><br><span class="line">  Object o = constructor1.newInstance();</span><br></pre></td></tr></table></figure>
 

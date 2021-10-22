@@ -230,9 +230,37 @@
 <li>不需要等待结果返回，就能继续运行就是异步</li>
 </ul>
 <p>​        注意：同步在多线程中还有一层意思，让多个线程步调一致</p>
+<h5 id="防止CPU占用100"><a href="#防止CPU占用100" class="headerlink" title="防止CPU占用100%"></a>防止CPU占用100%</h5><h6 id="sleep实现"><a href="#sleep实现" class="headerlink" title="sleep实现"></a>sleep实现</h6><p>在没有利用cpu来计算，不要让<code>while（ture)</code>循环空转，使用<code>sleep</code>或者<code>yield</code>来让出cpu、</p>
 ]]></content>
       <tags>
         <tag>java</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>docker</title>
+    <url>/2021/10/22/docker/</url>
+    <content><![CDATA[<h5 id="Mac-pro-m1-docker"><a href="#Mac-pro-m1-docker" class="headerlink" title="Mac pro m1 docker"></a>Mac pro m1 docker</h5><h6 id="下载版本时候内核要选择正确"><a href="#下载版本时候内核要选择正确" class="headerlink" title="下载版本时候内核要选择正确"></a>下载版本时候内核要选择正确</h6><p><img src="/2021/10/22/docker/image-20211022085528380.png" alt="image-20211022085528380"></p>
+<h6 id="下载下来后配置加速，建议使用阿里云"><a href="#下载下来后配置加速，建议使用阿里云" class="headerlink" title="下载下来后配置加速，建议使用阿里云"></a>下载下来后配置加速，建议使用阿里云</h6><p><img src="/2021/10/22/docker/image-20211022090044592.png" alt="image-20211022090044592"></p>
+<p><img src="/2021/10/22/docker/image-20211022090121181.png" alt="image-20211022090121181"></p>
+<h5 id="docker-中使用mysql"><a href="#docker-中使用mysql" class="headerlink" title="docker 中使用mysql"></a>docker 中使用mysql</h5><h6 id="m1-docker-mysql-镜像要使用arm64架构的"><a href="#m1-docker-mysql-镜像要使用arm64架构的" class="headerlink" title="m1 docker mysql 镜像要使用arm64架构的"></a>m1 docker mysql 镜像要使用arm64架构的</h6><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker pull mysql/mysql-server</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker run -p 3306:3306 --name rick-mysql -e MYSQL_ROOT_PASSWORD=123456 -d mysql/mysql-server:latest</span><br><span class="line"></span><br><span class="line">docker run -d -p 3306:3306 --name rick-mysql \</span><br><span class="line">-e MYSQL_ROOT_PASSWORD=123456 \</span><br><span class="line">-v /Users/rick/dockervolumes/mysql/conf:/etc/mysql/conf.d \</span><br><span class="line">-v /Users/rick/dockervolumes/mysql/data:/var/lib/mysql \</span><br><span class="line">mysql/mysql-server:latest</span><br></pre></td></tr></table></figure>
+
+<h6 id="首次登录对宿主机进行授权"><a href="#首次登录对宿主机进行授权" class="headerlink" title="首次登录对宿主机进行授权"></a>首次登录对宿主机进行授权</h6><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker exec -it 202b8bce2dc1bd33fad0e5ad9d2094025e9e7fd52d52fed059189de9daf48a6d /bin/bash</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">新版的mysql 将授权和创建账户分开了。<span class="keyword">grant</span>语句有不同</span><br><span class="line">update <span class="keyword">user</span> <span class="keyword">set</span> host<span class="operator">=</span><span class="string">&#x27;%&#x27;</span> <span class="keyword">where</span> <span class="keyword">user</span> <span class="operator">=</span> <span class="string">&#x27;root&#x27;</span>;</span><br><span class="line"><span class="keyword">GRANT</span> <span class="keyword">ALL</span> PRIVILEGES <span class="keyword">ON</span> <span class="operator">*</span>.<span class="operator">*</span> <span class="keyword">TO</span> <span class="string">&#x27;root&#x27;</span>@<span class="string">&#x27;%&#x27;</span> ;## <span class="keyword">WITH</span> <span class="keyword">GRANT</span> OPTION;</span><br><span class="line">flush privileges;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2021/10/22/docker/image-20211022091812934.png" alt="image-20211022091812934"></p>
+<h5 id="docker-使用nginx"><a href="#docker-使用nginx" class="headerlink" title="docker 使用nginx"></a>docker 使用nginx</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker pull nginx</span><br><span class="line">docker run --name rick-nginx -p 3344:80 -d nginx:latest</span><br></pre></td></tr></table></figure>
+
+<h5 id="docker-使用tomcat"><a href="#docker-使用tomcat" class="headerlink" title="docker 使用tomcat"></a>docker 使用tomcat</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// -rm  用完停止就删除，一般用于测试</span><br><span class="line">docker run -it --rm tomcat:latest</span><br><span class="line"></span><br><span class="line">docker run --name rick-tomcat -p 3355:8080 -d tomcat:latest</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>tech</category>
+      </categories>
+      <tags>
+        <tag>Docker</tag>
       </tags>
   </entry>
 </search>
